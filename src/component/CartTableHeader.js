@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableHeader(props) {
+function CartTableHeader(props) {
   return (
     <tr>
       <td>
@@ -22,8 +22,4 @@ function TableHeader(props) {
   );
 }
 
-export default TableHeader;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);
+export default CartTableHeader;

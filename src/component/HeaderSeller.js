@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
-import { NavDropdown } from "react-bootstrap";
+import { connect } from "unistore/react";
 import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
@@ -28,7 +28,7 @@ function HeaderSeller(props) {
               </Nav.Link>
               <Nav.Link>
                 <Link to="/seller/profile" style={{ color: "grey" }}>
-                  Profile
+                  Profile {props.sellerProfile.seller_details.name}
                 </Link>
               </Nav.Link>
               <Nav.Link>
@@ -52,14 +52,14 @@ function HeaderSeller(props) {
                 </Link>
               </Nav.Link>
             </Nav>
-            {/* <Form inline>
+            <Form inline>
               <FormControl
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
               />
               <Button variant="outline-success">Search</Button>
-            </Form> */}
+            </Form>
           </Navbar.Collapse>
         </Navbar>
       </header>
@@ -67,4 +67,4 @@ function HeaderSeller(props) {
   );
 }
 
-export default HeaderSeller;
+export default connect("sellerProfile")(HeaderSeller);

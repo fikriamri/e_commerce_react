@@ -1,13 +1,11 @@
 import React from "react";
 import axios from "axios";
-import { Link, Redirect } from "react-router-dom";
 import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderHomePublic from "../component/HeaderHomePublic";
-import ItemHome from "../component/ItemHome";
 import SignInForm from "../component/SignInForm";
 
-const hostLogin = "http://0.0.0.0:5050/signin";
+const hostLogin = "http://0.0.0.0:5020/signin";
 
 class SignInBuyer extends React.Component {
   constructor(props) {
@@ -61,14 +59,11 @@ class SignInBuyer extends React.Component {
             localStorage.setItem("client_key", response.data.claims.client_key);
             localStorage.setItem("status", response.data.claims.status);
             console.log("get", response);
-
-            // self.setState({ listPemain: response.data.pemain });
           })
           .catch(function(error) {
             console.log("error", error);
           });
         self.movePage();
-        // self.setState({ listPemain: response.data.pemain });
       })
       .catch(function(error) {
         alert("Invalid username or password!");
@@ -79,19 +74,16 @@ class SignInBuyer extends React.Component {
   movePage = () => {
     const status = JSON.parse(localStorage.getItem("status"));
     console.log("status", status);
-    if (status == true) {
+    if (status === true) {
       // pindah ke halaman profile seller
       this.props.history.replace("/seller/profile");
-    } else if (status == false) {
+    } else if (status === false) {
       // pindah ke halaman profile buyer
       this.props.history.replace("/profile");
     }
   };
 
   render() {
-    // console.log(this.state.data);
-    // console.log(this.state.data.client_key);
-    console.log("token", this.props.token);
     return (
       <div>
         <HeaderHomePublic />
@@ -111,7 +103,6 @@ class SignInBuyer extends React.Component {
   }
 }
 
-// export default SignInBuyer;
 export default connect(
   "token",
   actions

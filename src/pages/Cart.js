@@ -1,21 +1,17 @@
 import React from "react";
-import axios from "axios";
-import { Link, Redirect } from "react-router-dom";
 import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderBuyer from "../component/HeaderBuyer";
-import TableHeader from "../component/TableHeader";
-import TableContain from "../component/TableContain";
-
-const hostCart = "http://0.0.0.0:5050/cart";
-const hostCheckout = "http://0.0.0.0:5050/checkout";
+import CartTableHeader from "../component/CartTableHeader";
+import CartTableContain from "../component/CartTableContain";
 
 class Cart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       courier: "JNE",
-      payment_method: "Bank Transfer"
+      payment_method: "Bank Transfer",
+      qty: 1
     };
   }
 
@@ -29,37 +25,34 @@ class Cart extends React.Component {
     console.log("pymnt", this.state.payment_method);
   };
 
-  handleCheckout = async event => {
-    event.preventDefault();
-    // alert("Your product has been added to cart!");
-    const self = this;
-    const req = {
-      method: "post",
-      url: hostCheckout,
-      data: {
-        courier: self.state.courier,
-        payment_method: self.state.payment_method
-      },
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    };
-    await axios(req)
-      .then(function(response) {
-        if (response.data.status == "Cart Empty!") {
-          alert("Cart Empty!");
-        } else {
-          alert("Checkout Success! Please finish the payment");
-        }
-        console.log(response.data);
-        self.redirect();
+  handleChangeQty = event => {
+    this.setState({ qty: event.target.value });
+    console.log("qty", this.state.qty);
+  };
 
-        // console.log(self.state.qty);
-      })
-      .catch(function(error) {
-        // alert(error);
-        console.log("error", error);
-      });
+  handleCheckout = event => {
+    event.preventDefault();
+    const data = {
+      courier: this.state.courier,
+      payment_method: this.state.payment_method
+    };
+    this.props.checkout(data);
+    this.redirect();
+  };
+
+  handleEdit = product_id => async event => {
+    event.preventDefault();
+    await this.props.setCartByProductId(product_id);
+    this.setState({ qty: this.props.cartByProductId.qty });
+  };
+
+  handleSubmitEditCart = event => {
+    event.preventDefault();
+    const data = {
+      product_id: this.props.cartByProductId.product_id,
+      qty: this.state.qty
+    };
+    this.props.handleSubmitEditCart(data);
   };
 
   redirect = () => {
@@ -67,26 +60,7 @@ class Cart extends React.Component {
   };
 
   componentDidMount = async () => {
-    const self = this;
-    const req = {
-      method: "get",
-      url: hostCart,
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    };
-    await axios(req)
-      .then(function(response) {
-        self.props.setCart(response.data);
-        // self.setState({ listBooking: response.data.booking });
-        // self.props.history.replace("/");
-        console.log(response.data);
-        console.log(self.props.Cart);
-      })
-      .catch(function(error) {
-        // alert(error);
-        console.log("error", error);
-      });
+    this.props.setCart();
   };
 
   render() {
@@ -104,27 +78,27 @@ class Cart extends React.Component {
                 <div className="col-md4">
                   <table className="cart-table">
                     <tbody>
-                      <TableHeader subTotal="Sub Total" />
+                      <CartTableHeader subTotal="Sub Total" />
 
-                      {this.props.Cart.map((item, index) => {
-                        {
-                          total += item.price * item.qty;
-                        }
+                      {this.props.cart.map((item, index) => {
+                        total += item.price * item.qty;
                         return (
-                          <TableContain
+                          <CartTableContain
                             number={index + 1}
                             product_name={item.product_name}
                             price={item.price}
                             qty={item.qty}
-                            subTotal={
-                              item.price * item.qty
-                              //   <button
-                              //     type="button"
-                              //     class="btn btn-outline-danger"
-                              //     // onClick={props.handleAddToCart}
-                              //   >
-                              //     x
-                              //   </button>
+                            subTotal={item.price * item.qty}
+                            edit={
+                              <button
+                                type="button"
+                                class="btn btn-info"
+                                onClick={this.handleEdit(item.product_id)}
+                                data-toggle="modal"
+                                data-target="#EditCart"
+                              >
+                                Edit
+                              </button>
                             }
                           />
                         );
@@ -149,40 +123,13 @@ class Cart extends React.Component {
                     </tbody>
                   </table>
                   <div className="container">
-                    <div className="row justify-content-center">
-                      <div class="form-group col-md-6">
-                        <label for="courier">Courier</label>
-                        <select
-                          className="browser-default custom-select"
-                          id="courier"
-                          onChange={this.handleChangeCourier}
-                        >
-                          <option value="JNE">JNE</option>
-                          <option value="POS">POS</option>
-                          <option value="JNT">JNT</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="payment_method">Payment Method</label>
-                        <select
-                          className="browser-default custom-select"
-                          id="payment_method"
-                          onChange={this.handleChangePaymentMethod}
-                        >
-                          <option value="bank_transfer">Bank Transfer</option>
-                          <option value="ovo">OVO</option>
-                          <option value="go_pay">Go-Pay</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="container">
                     <div class="row text-right button-cart">
                       <div class="col-12">
                         <button
                           type="button"
                           class="btn btn-danger"
-                          onClick={this.handleCheckout}
+                          data-toggle="modal"
+                          data-target="#checkout"
                         >
                           Checkout
                         </button>
@@ -194,13 +141,194 @@ class Cart extends React.Component {
             </div>
           </div>
         </div>
+        {/* Modal Edit Cart */}
+        <div
+          class="modal fade"
+          id="EditCart"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="EditCart"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="EditCart">
+                  Edit Cart
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <h6>Product Name</h6>
+                  <p>{this.props.cartByProductId.product_name}</p>
+                  <h6>Price</h6>
+                  <p>{this.props.cartByProductId.price}</p>
+                  <label for="qty">Qty</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="qty"
+                    onChange={this.handleChangeQty}
+                    value={this.state.qty}
+                  />
+                  {console.log(this.state.qty)}
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  onClick={this.props.handleSubmitDeleteCart}
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#EditSuccess"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={this.handleSubmitEditCart}
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#EditSuccess"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Modal Checkout */}
+        <div
+          class="modal fade"
+          id="checkout"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="checkout"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="checkout">
+                  Checkout
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <label for="courier">Courier</label>
+                  <select
+                    className="browser-default custom-select"
+                    id="courier"
+                    onChange={this.handleChangeCourier}
+                  >
+                    <option value="JNE">JNE</option>
+                    <option value="POS">POS</option>
+                    <option value="JNT">JNT</option>
+                  </select>
+                  <label for="payment_method">Payment Method</label>
+                  <select
+                    className="browser-default custom-select"
+                    id="payment_method"
+                    onChange={this.handleChangePaymentMethod}
+                  >
+                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="ovo">OVO</option>
+                    <option value="go_pay">Go-Pay</option>
+                  </select>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  onClick={this.handleCheckout}
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#EditSuccess"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Modal Edit Success */}
+        <div
+          class="modal fade"
+          id="EditSuccess"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="EditTitle"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="EditTitle">
+                  Your changes has been submitted!
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Please refresh page to apply the changes!
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-// export default HomeBuyer;
 export default connect(
-  "AllProduct, Cart",
+  "AllProduct, cart, cartByProductId",
   actions
 )(Cart);

@@ -1,16 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function ItemDetail(props) {
   return (
     <div className="container px-0">
       <div className="row justify-content-center">
         <div className="col-md-3 col-sm-12 py-3">
-          <img src={props.image} class="imagedetail w-100 px-2 shadow" />
+          <img
+            src={props.image}
+            class="imagedetail w-100 px-2 shadow"
+            alt="product"
+          />
         </div>
         <div className="col-md-6 col-sm-12 contain p-4 border shadow">
           <h4 class="font-weight-bold">{props.product_name}</h4>
@@ -59,7 +58,3 @@ function ItemDetail(props) {
 }
 
 export default ItemDetail;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);

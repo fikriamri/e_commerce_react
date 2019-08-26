@@ -1,16 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import HeaderHomePublic from "../component/HeaderHomePublic";
-import ItemHome from "../component/ItemHome";
 import SignUpSellerForm from "../component/SignUpSellerForm";
 
-const host = "http://0.0.0.0:5050/seller/signup";
+const host = "http://0.0.0.0:5020/seller/signup";
 
 class SignUpSeller extends React.Component {
   constructor(props) {
@@ -123,7 +116,3 @@ class SignUpSeller extends React.Component {
 }
 
 export default SignUpSeller;
-// export default connect(
-//     "listzodiac,listimage,listDailyZodiac",
-//     actions
-// )(Home);

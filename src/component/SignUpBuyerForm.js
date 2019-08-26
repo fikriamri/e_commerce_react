@@ -1,9 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function SignUpBuyerForm(props) {
   return (
@@ -22,7 +17,6 @@ function SignUpBuyerForm(props) {
               id="fullname"
               placeholder="full name"
               onChange={props.handleChangeName}
-              // // value={props.value.name}
             />
           </div>
         </div>
@@ -35,7 +29,6 @@ function SignUpBuyerForm(props) {
               id="username"
               placeholder="username"
               onChange={props.handleChangeClientKey}
-              // // value={props.value.client_key}
             />
           </div>
         </div>
@@ -48,7 +41,6 @@ function SignUpBuyerForm(props) {
               id="password"
               placeholder="password"
               onChange={props.handleChangeClientSecret}
-              // // value={props.value.client_secret}
             />
           </div>
         </div>
@@ -61,7 +53,6 @@ function SignUpBuyerForm(props) {
               id="email"
               placeholder="example@example.com"
               onChange={props.handleChangeEmail}
-              // // value={props.value.email}
             />
           </div>
         </div>
@@ -74,7 +65,6 @@ function SignUpBuyerForm(props) {
               id="phone_number"
               placeholder="phone number "
               onChange={props.handleChangePhoneNumber}
-              // // value={props.value.phone_number}
             />
           </div>
         </div>
@@ -87,7 +77,6 @@ function SignUpBuyerForm(props) {
               id="full_address"
               placeholder="full address"
               onChange={props.handleChangeAddress}
-              // // value={props.value.address}
             />
           </div>
         </div>
@@ -100,7 +89,6 @@ function SignUpBuyerForm(props) {
               id="postal_code"
               placeholder="postal code"
               onChange={props.handleChangePostalCode}
-              // // value={props.value.postal_code}
             />
           </div>
         </div>
@@ -120,7 +108,3 @@ function SignUpBuyerForm(props) {
 }
 
 export default SignUpBuyerForm;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);

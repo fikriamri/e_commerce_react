@@ -6,6 +6,7 @@ import { NavDropdown } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { connect } from "unistore/react";
 
 function HeaderBuyer(props) {
   return (
@@ -27,7 +28,7 @@ function HeaderBuyer(props) {
               </Nav.Link>
               <Nav.Link>
                 <Link to="/profile" style={{ color: "grey" }}>
-                  Profile
+                  Profile {props.buyerProfile.buyer_details.name}
                 </Link>
               </Nav.Link>
               <NavDropdown title="Category" id="basic-nav-dropdown">
@@ -68,14 +69,14 @@ function HeaderBuyer(props) {
                 </Link>
               </Nav.Link>
             </Nav>
-            {/* <Form inline>
+            <Form inline>
               <FormControl
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
               />
               <Button variant="outline-success">Search</Button>
-            </Form> */}
+            </Form>
           </Navbar.Collapse>
         </Navbar>
       </header>
@@ -83,4 +84,4 @@ function HeaderBuyer(props) {
   );
 }
 
-export default HeaderBuyer;
+export default connect("buyerProfile")(HeaderBuyer);

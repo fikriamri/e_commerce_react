@@ -1,9 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function AddProductForm(props) {
   return (
@@ -22,7 +17,6 @@ function AddProductForm(props) {
               id="product_name"
               placeholder="product name"
               onChange={props.handleChangeProductName}
-              // // value={props.value.name}
             />
           </div>
         </div>
@@ -50,7 +44,6 @@ function AddProductForm(props) {
               id="description"
               placeholder="description"
               onChange={props.handleChangeDescription}
-              // // value={props.value.client_key}
             />
           </div>
         </div>
@@ -63,7 +56,6 @@ function AddProductForm(props) {
               id="price"
               placeholder="0"
               onChange={props.handleChangePrice}
-              // // value={props.value.client_secret}
             />
           </div>
         </div>
@@ -88,7 +80,6 @@ function AddProductForm(props) {
               id="stock"
               placeholder="0"
               onChange={props.handleChangeStock}
-              // // value={props.value.client_secret}
             />
           </div>
         </div>
@@ -108,7 +99,3 @@ function AddProductForm(props) {
 }
 
 export default AddProductForm;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);

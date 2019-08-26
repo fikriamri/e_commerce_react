@@ -1,9 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function SignInForm(props) {
   return (
@@ -22,7 +17,6 @@ function SignInForm(props) {
               id="username"
               placeholder="username"
               onChange={props.handleChangeClientKey}
-              // // value={props.value.client_key}
             />
           </div>
         </div>
@@ -35,7 +29,6 @@ function SignInForm(props) {
               id="password"
               placeholder="password"
               onChange={props.handleChangeClientSecret}
-              // // value={props.value.client_secret}
             />
           </div>
         </div>
@@ -56,7 +49,3 @@ function SignInForm(props) {
 }
 
 export default SignInForm;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);

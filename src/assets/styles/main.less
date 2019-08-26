@@ -4,16 +4,17 @@
 
 .signin,
 .signup,
-.home {
+.home,
+.not-found {
   padding-top: 80px;
 }
 
 .item-home {
   .item-home2 {
-    height: 230px;
+    height: 350px;
   }
   .imgitem-home {
-    height: 100px;
+    height: 200px;
     margin-bottom: 15px;
   }
   .link {
@@ -22,6 +23,10 @@
       transform: scale(1.1);
     }
   }
+}
+
+.item-seller {
+  height: 400px;
 }
 
 .cart {
@@ -45,6 +50,37 @@
 
 .profile {
   padding-top: 80px;
+  .title {
+    text-align: left;
+    width: 300px;
+    padding: 10px;
+  }
+
+  .colon {
+    padding-left: 0px;
+    padding-right: 40px;
+  }
+  .contain {
+    padding-right: 10px;
+    text-align: left;
+  }
+}
+
+// Buyer Profile
+.transaction {
+  margin-top: 30px;
+}
+
+.transaction-table {
+  td {
+    width: 200px;
+  }
+}
+
+.transaction-details {
+  td {
+    width: 200px;
+  }
 }
 
 @media only screen and (min-width: 768px) {
@@ -57,5 +93,20 @@
   }
   .button-cart {
     padding-right: 30px;
+  }
+  .profile {
+    .title {
+      // padding-right: 90px;
+      width: 200px;
+      padding: 10px;
+    }
+    .colon {
+      width: 50 px;
+      padding-left: 0px;
+      padding-right: 40px;
+    }
+    .contain {
+      padding-right: 10px;
+    }
   }
 }

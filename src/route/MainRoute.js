@@ -12,8 +12,8 @@ import AddProduct from "../pages/AddProduct";
 import HomeSeller from "../pages/HomeSeller";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
 import HomeByCategory from "../pages/HomeByCategory";
+import NotFound from "../pages/NotFound";
 
 function MainRoutes() {
   return (
@@ -31,7 +31,7 @@ function MainRoutes() {
           <Route exact path="/allproduct/:id" component={ProductDetails} />
           <Route exact path="/category/:category" component={HomeByCategory} />
           <Route exact path="/cart" component={Cart} />
-          <Route exact path="/checkout" component={Checkout} />
+          <Route component={NotFound} />
         </Switch>
       </Router>
     </Provider>

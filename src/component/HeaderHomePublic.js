@@ -7,7 +7,7 @@ import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
-function HeaderHomePublic(props) {
+function HeaderHomePublic() {
   return (
     <div>
       <header>
@@ -63,14 +63,14 @@ function HeaderHomePublic(props) {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            {/* <Form inline>
+            <Form inline>
               <FormControl
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
               />
               <Button variant="outline-success">Search</Button>
-            </Form> */}
+            </Form>
           </Navbar.Collapse>
         </Navbar>
       </header>

@@ -1,19 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function ItemHome(props) {
+  let styleDeleted = {};
+  if (props.description === "deleted") {
+    styleDeleted = { color: "red" };
+  }
   return (
     <div className="item-home">
-      <div className="row justify-content-center shadow border mx-1 my-4 py-4 item-home2">
+      <div
+        className={
+          "row justify-content-center shadow border mx-1 my-4 py-4 item-home2" +
+          props.sellerClass
+        }
+      >
         <div className="col-12 text-center">
           <img
             className="imgitem-home w-100 shadow"
             src={props.image}
-            alt="logo"
+            alt="product"
           />
         </div>
         <div className="col-12 text-center">
@@ -21,6 +26,11 @@ function ItemHome(props) {
         </div>
         <div className="col-12 text-center">
           <span>Rp. {props.price}</span>
+        </div>
+        <div className="col-12 text-center">
+          {/* <span>Description:</span>
+          <br /> */}
+          <span style={styleDeleted}>{props.description}</span>
         </div>
         <div className="col-12 text-center">
           <Link
@@ -34,13 +44,12 @@ function ItemHome(props) {
             <span>{props.store_name}</span>
           </Link>
         </div>
+        <div className="col-12 text-center">
+          <span>{props.button}</span>
+        </div>
       </div>
     </div>
   );
 }
 
 export default ItemHome;
-// export default connect(
-//     "isLogin",
-//     actions
-// )(HeaderPublic);

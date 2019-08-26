@@ -1,12 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
 import HeaderHomePublic from "../component/HeaderHomePublic";
 import SignUpBuyerForm from "../component/SignUpBuyerForm";
 
-const host = "http://0.0.0.0:5050/signup";
+const host = "http://0.0.0.0:5020/signup";
 
 class SignUpBuyer extends React.Component {
   constructor(props) {
@@ -76,8 +73,6 @@ class SignUpBuyer extends React.Component {
     await axios(req)
       .then(function(response) {
         this.props.history.replace("/signin");
-        // self.setState({ listBooking: response.data.booking });
-        // self.props.history.replace("/");
         console.log(response.data);
         console.log(self.state.data);
       })
@@ -88,8 +83,6 @@ class SignUpBuyer extends React.Component {
   };
 
   render() {
-    // console.log(this.state.data);
-    // console.log(this.state.data.client_key);
     return (
       <div>
         <HeaderHomePublic />
@@ -111,7 +104,3 @@ class SignUpBuyer extends React.Component {
 }
 
 export default SignUpBuyer;
-// export default connect(
-//     "listzodiac,listimage,listDailyZodiac",
-//     actions
-// )(Home);

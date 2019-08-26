@@ -1,16 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { connect } from "unistore/react";
-import { actions } from "../store/store";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import HeaderSeller from "../component/HeaderSeller";
-import ItemHome from "../component/ItemHome";
 import AddProductForm from "../component/AddProductForm";
 
-const host = "http://0.0.0.0:5050/product";
+const host = "http://0.0.0.0:5020/product";
 
 class AddProduct extends React.Component {
   constructor(props) {
@@ -80,7 +73,7 @@ class AddProduct extends React.Component {
         console.log(self.state.data);
       })
       .catch(function(error) {
-        // alert(error);
+        alert(error);
         console.log("error", error);
       });
   };

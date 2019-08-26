@@ -1,13 +1,13 @@
 import React from "react";
 
-function TableContain(props) {
+function TransactionDetailsTableContain(props) {
   return (
     <tr>
       <td>
         <p>{props.number}</p>
       </td>
       <td>
-        <p className="product-name">{props.product_name}</p>
+        <p>{props.productName}</p>
       </td>
       <td>
         <p>{props.price}</p>
@@ -15,11 +15,8 @@ function TableContain(props) {
       <td>
         <p>{props.qty}</p>
       </td>
-      <td>
-        <p>{props.subTotal}</p>
-      </td>
     </tr>
   );
 }
 
-export default TableContain;
+export default TransactionDetailsTableContain;
