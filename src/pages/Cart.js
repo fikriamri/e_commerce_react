@@ -4,6 +4,10 @@ import { actions } from "../store/store";
 import HeaderBuyer from "../component/HeaderBuyer";
 import CartTableHeader from "../component/CartTableHeader";
 import CartTableContain from "../component/CartTableContain";
+import ModalEditCart from "../component/ModalEditCart";
+import ModalCheckout from "../component/ModalCheckout";
+import ModalSuccess from "../component/ModalSuccess";
+import Footer from "../component/Footer";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -37,6 +41,10 @@ class Cart extends React.Component {
       payment_method: this.state.payment_method
     };
     this.props.checkout(data);
+  };
+
+  handleCloseCheckout = event => {
+    event.preventDefault();
     this.redirect();
   };
 
@@ -46,13 +54,20 @@ class Cart extends React.Component {
     this.setState({ qty: this.props.cartByProductId.qty });
   };
 
-  handleSubmitEditCart = event => {
+  handleSubmitEditCart = async event => {
     event.preventDefault();
     const data = {
       product_id: this.props.cartByProductId.product_id,
       qty: this.state.qty
     };
-    this.props.handleSubmitEditCart(data);
+    await this.props.handleSubmitEditCart(data);
+    this.props.setCart();
+  };
+
+  handleSubmitDeleteCart = async event => {
+    event.preventDefault();
+    await this.props.handleSubmitDeleteCart();
+    await this.props.setCart();
   };
 
   redirect = () => {
@@ -141,188 +156,34 @@ class Cart extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
         {/* Modal Edit Cart */}
-        <div
-          class="modal fade"
-          id="EditCart"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="EditCart"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="EditCart">
-                  Edit Cart
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <h6>Product Name</h6>
-                  <p>{this.props.cartByProductId.product_name}</p>
-                  <h6>Price</h6>
-                  <p>{this.props.cartByProductId.price}</p>
-                  <label for="qty">Qty</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="qty"
-                    onChange={this.handleChangeQty}
-                    value={this.state.qty}
-                  />
-                  {console.log(this.state.qty)}
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  onClick={this.props.handleSubmitDeleteCart}
-                  data-dismiss="modal"
-                  data-toggle="modal"
-                  data-target="#EditSuccess"
-                >
-                  Delete
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={this.handleSubmitEditCart}
-                  data-dismiss="modal"
-                  data-toggle="modal"
-                  data-target="#EditSuccess"
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalEditCart
+          product_name={this.props.cartByProductId.product_name}
+          price={this.props.cartByProductId.price}
+          handleChangeQty={this.handleChangeQty}
+          qty={this.state.qty}
+          handleSubmitDeleteCart={this.handleSubmitDeleteCart}
+          handleSubmitEditCart={this.handleSubmitEditCart}
+        />
         {/* Modal Checkout */}
-        <div
-          class="modal fade"
-          id="checkout"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="checkout"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="checkout">
-                  Checkout
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <label for="courier">Courier</label>
-                  <select
-                    className="browser-default custom-select"
-                    id="courier"
-                    onChange={this.handleChangeCourier}
-                  >
-                    <option value="JNE">JNE</option>
-                    <option value="POS">POS</option>
-                    <option value="JNT">JNT</option>
-                  </select>
-                  <label for="payment_method">Payment Method</label>
-                  <select
-                    className="browser-default custom-select"
-                    id="payment_method"
-                    onChange={this.handleChangePaymentMethod}
-                  >
-                    <option value="bank_transfer">Bank Transfer</option>
-                    <option value="ovo">OVO</option>
-                    <option value="go_pay">Go-Pay</option>
-                  </select>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  onClick={this.handleCheckout}
-                  data-dismiss="modal"
-                  data-toggle="modal"
-                  data-target="#EditSuccess"
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalCheckout
+          handleChangeCourier={this.handleChangeCourier}
+          handleChangePaymentMethod={this.handleChangePaymentMethod}
+          handleCheckout={this.handleCheckout}
+        />
         {/* Modal Edit Success */}
-        <div
-          class="modal fade"
+        <ModalSuccess
           id="EditSuccess"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="EditTitle"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="EditTitle">
-                  Your changes has been submitted!
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Please refresh page to apply the changes!
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+          title="Success!"
+          body="Your changes has been submitted!"
+        />
+        <ModalSuccess
+          id="Checkout"
+          title="Success!"
+          body="Your transaction has been recorded!"
+          onClick={this.handleCloseCheckout}
+        />
       </div>
     );
   }

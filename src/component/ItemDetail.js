@@ -37,8 +37,9 @@ function ItemDetail(props) {
               <button
                 type="button"
                 class="btn btn-light btn-lg btn-block border"
+                onClick={props.handleBuy}
               >
-                Buy
+                Buy Now
               </button>
             </div>
             <div class="col-6">
@@ -46,6 +47,8 @@ function ItemDetail(props) {
                 type="button"
                 class="btn btn-danger btn-lg btn-block"
                 onClick={props.handleAddToCart}
+                data-toggle="modal"
+                data-target="#AddToCart"
               >
                 Add to Cart
               </button>

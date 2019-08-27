@@ -4,13 +4,14 @@ import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderBuyer from "../component/HeaderBuyer";
 import ItemDetail from "../component/ItemDetail";
-
-const hostCart = "http://0.0.0.0:5020/cart";
+import ModalSuccess from "../component/ModalSuccess";
+import Footer from "../component/Footer";
 
 class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      product_id: 0,
       qty: 1
     };
   }
@@ -22,35 +23,34 @@ class ProductDetails extends React.Component {
 
   handleAddToCart = async event => {
     event.preventDefault();
-    const self = this;
     const status = JSON.parse(localStorage.getItem("status"));
     if (status == undefined) {
       // pindah ke halaman profile buyer
       alert("You have to sign in!");
       this.props.history.replace("/signin");
     } else {
-      const req = {
-        method: "post",
-        url: hostCart,
-        data: {
-          product_id: self.props.match.params.id,
-          qty: self.state.qty
-        },
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
+      const data = {
+        product_id: this.props.match.params.id,
+        qty: this.state.qty
       };
-      await axios(req)
-        .then(function(response) {
-          alert("Your product has been added to cart!");
-          self.redirect();
-          console.log(response.data);
-          console.log(self.state.qty);
-        })
-        .catch(function(error) {
-          alert(error);
-          console.log("error", error);
-        });
+      await this.props.handleAddToCart(data);
+    }
+  };
+
+  handleBuy = async event => {
+    event.preventDefault();
+    const status = JSON.parse(localStorage.getItem("status"));
+    if (status == undefined) {
+      // pindah ke halaman profile buyer
+      alert("You have to sign in!");
+      this.props.history.replace("/signin");
+    } else {
+      const data = {
+        product_id: this.props.match.params.id,
+        qty: this.state.qty
+      };
+      await this.props.handleAddToCart(data);
+      this.props.history.replace("/cart");
     }
   };
 
@@ -58,8 +58,13 @@ class ProductDetails extends React.Component {
     this.props.history.replace("/");
   };
 
+  handleCloseAddToCart = event => {
+    this.props.history.push("/");
+  };
+
   componentDidMount = async () => {
     this.props.setAllProduct();
+    // this.setState({ product_id: this.props.match.params.id });
   };
 
   render() {
@@ -80,6 +85,7 @@ class ProductDetails extends React.Component {
                     description={item.description}
                     price={item.price}
                     handleChangeQty={this.handleChangeQty}
+                    handleBuy={this.handleBuy}
                     handleAddToCart={this.handleAddToCart}
                     stock={item.stock}
                     sold={item.sold}
@@ -88,12 +94,20 @@ class ProductDetails extends React.Component {
               })}
           </div>
         </div>
+        <Footer />
+        {/* Modal Success */}
+        <ModalSuccess
+          id="AddToCart"
+          title="Success!"
+          body="This product has been added to your cart!"
+          onClick={this.handleCloseAddToCart}
+        />
       </div>
     );
   }
 }
 
 export default connect(
-  "allProduct",
+  "allProduct, hostBase",
   actions
 )(ProductDetails);

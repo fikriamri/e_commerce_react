@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "unistore/react";
+import { actions } from "../store/store";
 import HeaderHomePublic from "../component/HeaderHomePublic";
 import SignUpSellerForm from "../component/SignUpSellerForm";
-
-const host = "http://0.0.0.0:5020/seller/signup";
+import Footer from "../component/Footer";
 
 class SignUpSeller extends React.Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class SignUpSeller extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+    const host = this.props.hostBase + "/seller/signup";
     const self = this;
     const req = {
       method: "post",
@@ -79,15 +81,18 @@ class SignUpSeller extends React.Component {
     };
     await axios(req)
       .then(function(response) {
-        this.props.history.replace("/signin");
+        self.redirect();
         console.log(response.data);
         console.log(self.state.data);
         // alert(response.data);
       })
       .catch(function(error) {
-        // alert(error);
         console.log("error", error);
       });
+  };
+
+  redirect = () => {
+    this.props.history.replace("/signin");
   };
 
   render() {
@@ -110,9 +115,13 @@ class SignUpSeller extends React.Component {
             handleSubmit={this.handleSubmit}
           />
         </div>
+        <Footer />
       </div>
     );
   }
 }
 
-export default SignUpSeller;
+export default connect(
+  "hostBase",
+  actions
+)(SignUpSeller);

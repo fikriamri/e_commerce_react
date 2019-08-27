@@ -24,7 +24,9 @@ const intialState = {
   orderDetails: [],
 
   // host
-  hostBase: "http://0.0.0.0:5020",
+  // hostBase: "http://0.0.0.0:5020",
+  hostBase: "https://api.fikriamri.xyz",
+  hostSignin: "/signin",
   hostAllProduct: "/product/all",
   hostSellerProduct: "/product/list",
   hostPostProduct: "/product",
@@ -40,6 +42,42 @@ const intialState = {
 export const store = createStore(intialState);
 
 export const actions = store => ({
+  async handleSignin(state, data) {
+    const req = {
+      method: "post",
+      url: store.getState().hostBase + store.getState().hostSignin,
+      data: data,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    };
+    await axios(req)
+      .then(async function(response) {
+        localStorage.setItem("token", response.data.token);
+        const reqGet = {
+          method: "get",
+          url: store.getState().hostBase + store.getState().hostSignin,
+          headers: {
+            Authorization: "Bearer " + response.data.token
+          }
+        };
+        await axios(reqGet)
+          .then(function(response) {
+            localStorage.setItem("client_id", response.data.claims.client_id);
+            localStorage.setItem("client_key", response.data.claims.client_key);
+            localStorage.setItem("status", response.data.claims.status);
+            console.log("get", response);
+          })
+          .catch(function(error) {
+            console.log("error", error);
+          });
+      })
+      .catch(error => {
+        alert("Invalid username or password!");
+        alert(error);
+      });
+  },
+
   // Fungsi untuk mendapatkan semua produk yang terdaftar di database
   async setAllProduct(state) {
     let url = store.getState().hostBase + store.getState().hostAllProduct;
@@ -154,6 +192,22 @@ export const actions = store => ({
       });
   },
 
+  async handleAddToCart(state, data) {
+    const req = {
+      method: "post",
+      url: store.getState().hostBase + store.getState().hostCart,
+      data: data,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    };
+    await axios(req)
+      .then(function(response) {})
+      .catch(error => {
+        alert(error);
+      });
+  },
+
   async setCart(state) {
     const req = {
       method: "get",
@@ -247,7 +301,7 @@ export const actions = store => ({
         if (response.data.status === "Cart Empty!") {
           alert("Cart Empty!");
         } else {
-          alert("Checkout Success! Please finish the payment");
+          // alert("Checkout Success! Please finish the payment");
         }
         console.log(response);
       })

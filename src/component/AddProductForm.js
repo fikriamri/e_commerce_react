@@ -88,6 +88,8 @@ function AddProductForm(props) {
             <button
               class="btn btn-primary btn-lg btn-block"
               onClick={props.handleSubmit}
+              data-toggle="modal"
+              data-target="#AddProduct"
             >
               Submit
             </button>

@@ -12,7 +12,7 @@ function HeaderBuyer(props) {
   return (
     <div>
       <header>
-        <Navbar bg="light" expand="lg" fixed="top">
+        <Navbar bg="light" expand="lg" fixed="top" className="shadow">
           <Navbar.Brand>
             <Link to="/" style={{ color: "black" }}>
               babypedia

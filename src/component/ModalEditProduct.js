@@ -1,6 +1,6 @@
 import React from "react";
 
-function ModalEditProfile(props) {
+function ModalEditProduct(props) {
   return (
     <div
       class="modal fade"
@@ -121,4 +121,4 @@ function ModalEditProfile(props) {
   );
 }
 
-export default ModalEditProfile;
+export default ModalEditProduct;

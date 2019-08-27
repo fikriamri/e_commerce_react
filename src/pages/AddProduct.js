@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "unistore/react";
+import { actions } from "../store/store";
 import HeaderSeller from "../component/HeaderSeller";
 import AddProductForm from "../component/AddProductForm";
-
-const host = "http://0.0.0.0:5020/product";
+import ModalSuccess from "../component/ModalSuccess";
+import Footer from "../component/Footer";
 
 class AddProduct extends React.Component {
   constructor(props) {
@@ -50,32 +52,19 @@ class AddProduct extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    const self = this;
-    const req = {
-      method: "post",
-      url: host,
-      data: {
-        product_name: self.state.product_name,
-        product_category_id: self.state.product_category_id,
-        description: self.state.description,
-        price: self.state.price,
-        image: self.state.image,
-        stock: self.state.stock
-      },
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
+    const data = {
+      product_name: this.state.product_name,
+      product_category_id: this.state.product_category_id,
+      description: this.state.description,
+      price: this.state.price,
+      image: this.state.image,
+      stock: this.state.stock
     };
-    await axios(req)
-      .then(function(response) {
-        this.props.history.push("/seller/add_product");
-        console.log(response.data);
-        console.log(self.state.data);
-      })
-      .catch(function(error) {
-        alert(error);
-        console.log("error", error);
-      });
+    this.props.handleSubmitProduct(data);
+  };
+
+  handleCloseCheckout = event => {
+    this.props.history.push("/seller");
   };
 
   render() {
@@ -93,9 +82,20 @@ class AddProduct extends React.Component {
             handleSubmit={this.handleSubmit}
           />
         </div>
+        <Footer />
+        {/* Modal Success */}
+        <ModalSuccess
+          id="AddProduct"
+          title="Success!"
+          body="Your Product has been recorded!"
+          onClick={this.handleCloseCheckout}
+        />
       </div>
     );
   }
 }
 
-export default AddProduct;
+export default connect(
+  "hostBase",
+  actions
+)(AddProduct);

@@ -4,7 +4,8 @@ import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderSeller from "../component/HeaderSeller";
 import ItemHome from "../component/ItemHome";
-import ModalEditProfile from "../component/ModalEditProfile";
+import ModalEditProduct from "../component/ModalEditProduct";
+import Footer from "../component/Footer";
 
 class HomeSeller extends React.Component {
   constructor(props) {
@@ -90,6 +91,12 @@ class HomeSeller extends React.Component {
     await this.props.setSellerProduct();
   };
 
+  handleSubmitDeleteProduct = async event => {
+    event.preventDefault();
+    await this.props.handleSubmitDeleteProduct();
+    await this.props.setSellerProduct();
+  };
+
   componentDidMount = async () => {
     this.props.setSellerProduct();
   };
@@ -138,7 +145,7 @@ class HomeSeller extends React.Component {
           </div>
         </div>
         {/* Modal Edit Product */}
-        <ModalEditProfile
+        <ModalEditProduct
           handleChangeProductName={this.handleChangeProductName}
           product_name={this.state.product_name}
           handleChangeProductCategoryId={this.handleChangeProductCategoryId}
@@ -151,7 +158,7 @@ class HomeSeller extends React.Component {
           image={this.state.image}
           handleChangeStock={this.handleChangeStock}
           stock={this.state.stock}
-          handleSubmitDeleteProduct={this.props.handleSubmitDeleteProduct}
+          handleSubmitDeleteProduct={this.handleSubmitDeleteProduct}
           handleSubmitEditProduct={this.handleSubmitEditProduct}
         />
         {/* Modal Edit Success */}
@@ -193,6 +200,7 @@ class HomeSeller extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React from "react";
 import HeaderHomePublic from "../component/HeaderHomePublic";
 import HeaderBuyer from "../component/HeaderBuyer";
 import HeaderSeller from "../component/HeaderSeller";
+import Footer from "../component/Footer";
 
 function NotFound() {
   const status = JSON.parse(localStorage.getItem("status"));
@@ -22,6 +23,7 @@ function NotFound() {
           <p>Your requested page not found!</p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

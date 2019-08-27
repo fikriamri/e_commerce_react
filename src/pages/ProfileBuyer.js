@@ -8,6 +8,10 @@ import TransactionTableHeader from "../component/TransactionTableHeader";
 import TransactionTableContain from "../component/TransactionTableContain";
 import TransactionDetailsTableHeader from "../component/TransactionDetailsTableHeader";
 import TransactionDetailsTableContain from "../component/TransactionDetailsTableContain";
+import Footer from "../component/Footer";
+import ModalEditProfileBuyer from "../component/ModalEditProfileBuyer";
+import ModalEditPassword from "../component/ModalEditPassword";
+import ModalSuccess from "../component/ModalSuccess";
 
 class ProfileBuyer extends React.Component {
   constructor(props) {
@@ -70,7 +74,7 @@ class ProfileBuyer extends React.Component {
     event.preventDefault();
     const req = {
       method: "get",
-      url: "http://0.0.0.0:5020/client/" + localStorage.getItem("client_id"),
+      url: self.props.hostBase + "/client/" + localStorage.getItem("client_id"),
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
@@ -96,7 +100,7 @@ class ProfileBuyer extends React.Component {
     }
   };
 
-  handleSubmitEditProfile = event => {
+  handleSubmitEditProfile = async event => {
     event.preventDefault();
     const data = {
       name: this.state.name,
@@ -105,7 +109,8 @@ class ProfileBuyer extends React.Component {
       address: this.state.address,
       postal_code: this.state.postal_code
     };
-    this.props.handleSubmitEditProfileBuyer(data);
+    await this.props.handleSubmitEditProfileBuyer(data);
+    await this.props.setBuyerProfile();
   };
 
   handleDetails = transaction_id => async event => {
@@ -227,209 +232,36 @@ class ProfileBuyer extends React.Component {
             </div>
           </div>
         </div>
+        <Footer />
         {/* Modal Edit Profile */}
-        <div
-          class="modal fade"
-          id="EditProfile"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="EditProfile"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="EditProfile">
-                  Edit Profile
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <label for="fullname">Full Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="fullname"
-                    onChange={this.handleChangeName}
-                    value={this.state.name}
-                  />
-                  <label for="email">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    onChange={this.handleChangeEmail}
-                    value={this.state.email}
-                  />
-                  <label for="phone_number">Phone Number</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="phone_number"
-                    onChange={this.handleChangePhoneNumber}
-                    value={this.state.phone_number}
-                  />
+        <ModalEditProfileBuyer
+          handleChangeName={this.handleChangeName}
+          name={this.state.name}
+          handleChangeEmail={this.handleChangeEmail}
+          email={this.state.email}
+          handleChangePhoneNumber={this.handleChangePhoneNumber}
+          phone_number={this.state.phone_number}
+          handleChangeAddress={this.handleChangeAddress}
+          address={this.state.address}
+          handleChangePostalCode={this.handleChangePostalCode}
+          postal_code={this.state.postal_code}
+          handleSubmitEditProfile={this.handleSubmitEditProfile}
+        />
 
-                  <label for="full_address">Full Address</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="full_address"
-                    onChange={this.handleChangeAddress}
-                    value={this.state.address}
-                  />
-                  <label for="postal_code">Postal Code</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="postal_code"
-                    onChange={this.handleChangePostalCode}
-                    value={this.state.postal_code}
-                  />
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={this.handleSubmitEditProfile}
-                  data-dismiss="modal"
-                  data-toggle="modal"
-                  data-target="#EditSuccess"
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
         {/* Modal Edit Password */}
-        <div
-          class="modal fade"
-          id="EditPassword"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="EditPassword"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="EditPassword">
-                  Edit Password
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <label for="fullname">username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="fullname"
-                    onChange={this.handleChangeClientKey}
-                    value={this.state.client_key}
-                  />
-                  <label for="oldPassword">Old Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="oldPassword"
-                    onChange={this.handleChangeOldPassword}
-                  />
-                  <label for="newPassword">New Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="newPassword"
-                    onChange={this.handleChangeNewPassword}
-                  />
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={this.handleSubmitEditPassword}
-                  data-dismiss="modal"
-                  data-toggle="modal"
-                  // Perlu dihandle jika old password salah
-                  data-target="#EditSuccess"
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalEditPassword
+          handleChangeClientKey={this.handleChangeClientKey}
+          client_key={this.state.client_key}
+          handleChangeOldPassword={this.handleChangeOldPassword}
+          handleChangeNewPassword={this.handleChangeNewPassword}
+          handleSubmitEditPassword={this.handleSubmitEditPassword}
+        />
         {/* Modal Edit Success */}
-        <div
-          class="modal fade"
+        <ModalSuccess
           id="EditSuccess"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="EditTitle"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="EditTitle">
-                  Your changes has been submitted!
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Please refresh page to apply the changes!
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+          title="Success!"
+          body="Your changes has been submitted!"
+        />
         {/* Modal Transaction Details */}
         <div
           class="modal fade"
@@ -489,6 +321,6 @@ class ProfileBuyer extends React.Component {
 }
 
 export default connect(
-  "buyerProfile, transaction, transactionDetails",
+  "buyerProfile, transaction, transactionDetails, hostBase",
   actions
 )(ProfileBuyer);
