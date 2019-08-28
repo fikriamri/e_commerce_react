@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderBuyer from "../component/HeaderBuyer";
@@ -64,7 +63,6 @@ class ProductDetails extends React.Component {
 
   componentDidMount = async () => {
     this.props.setAllProduct();
-    // this.setState({ product_id: this.props.match.params.id });
   };
 
   render() {

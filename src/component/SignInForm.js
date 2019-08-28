@@ -35,7 +35,6 @@ function SignInForm(props) {
         <div className="row justify-content-center">
           <div class="form-group col-md-6">
             <button
-              //   type="submit"
               class="btn btn-primary btn-lg btn-block"
               onClick={props.handleSubmit}
             >

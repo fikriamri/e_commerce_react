@@ -28,8 +28,6 @@ function ItemHome(props) {
           <span>Rp. {props.price}</span>
         </div>
         <div className="col-12 text-center">
-          {/* <span>Description:</span>
-          <br /> */}
           <span style={styleDeleted}>{props.description}</span>
         </div>
         <div className="col-12 text-center">
@@ -38,7 +36,6 @@ function ItemHome(props) {
             style={{
               textDecoration: "none",
               color: "grey"
-              // linkStyle
             }}
           >
             <span>{props.store_name}</span>

@@ -65,7 +65,6 @@ function ModalEditPassword(props) {
               onClick={props.handleSubmitEditPassword}
               data-dismiss="modal"
               data-toggle="modal"
-              // Perlu dihandle jika old password salah
               data-target="#EditSuccess"
             >
               Save changes

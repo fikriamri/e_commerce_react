@@ -27,7 +27,6 @@ function ItemDetail(props) {
                 id="qty"
                 placeholder="1"
                 onChange={props.handleChangeQty}
-                // // value={props.value.client_secret}
               />
             </div>
           </div>

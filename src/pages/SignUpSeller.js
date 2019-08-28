@@ -84,7 +84,6 @@ class SignUpSeller extends React.Component {
         self.redirect();
         console.log(response.data);
         console.log(self.state.data);
-        // alert(response.data);
       })
       .catch(function(error) {
         console.log("error", error);

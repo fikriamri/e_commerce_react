@@ -24,7 +24,6 @@ const intialState = {
   orderDetails: [],
 
   // host
-  // hostBase: "http://0.0.0.0:5020",
   hostBase: "https://api.fikriamri.xyz",
   hostSignin: "/signin",
   hostAllProduct: "/product/all",

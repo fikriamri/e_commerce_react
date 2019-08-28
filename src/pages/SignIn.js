@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { connect } from "unistore/react";
 import { actions } from "../store/store";
 import HeaderHomePublic from "../component/HeaderHomePublic";
