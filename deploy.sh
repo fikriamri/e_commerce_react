@@ -1,13 +1,10 @@
 #!/bin/bash
 
 eval "$(ssh-agent -s)" &&
-ssh-add -k ~/.ssh/id_rsa &&
-cd /var/www/helloworld
-git pull
 
 source ~/.profile
 echo "$DOCKERHUB_PASS" | docker login --username $DOCKERHUB_USER --password-stdin
-docker stop helloworld
-docker rm helloworld
-docker rmi aprynur/helloworld
-docker run -d --name helloworld -p 5000:5000 aprynur/helloworld:latest
+docker stop fikriamri/e-commerce-frontend:v.2
+docker rm fikriamri/e-commerce-frontend:v.2
+docker rmi fikriamri/e-commerce-frontend:v.2
+docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.2
