@@ -14,7 +14,7 @@ function HeaderHomePublic() {
         <Navbar bg="light" expand="lg" fixed="top" className="shadow">
           <Navbar.Brand>
             <Link to="/" style={{ color: "black" }}>
-              babypedia travis coy
+              babypedia travis ah
             </Link>
           </Navbar.Brand>
 
